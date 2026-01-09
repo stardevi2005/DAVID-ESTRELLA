@@ -241,6 +241,19 @@
         const WeddingSubSection = () => {
             const [activeTab, setActiveTab] = useState('paquetes');
 
+            const team = [
+                { name: "David Estrella", role: "Filmmaker Principal", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974" },
+                { name: "Alonso Padilla", role: "Filmmaker Secundario", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1974" },
+                { name: "Cristian Uribe", role: "Fotógrafo Principal", img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2070" },
+                { name: "Junior Rabor", role: "Fotógrafo Secundario", img: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1974" }
+            ];
+
+            const testimonials = [
+                { name: "María & Juan", text: "David capturó la esencia de nuestro día de una manera que no sabíamos que era posible. Cada vez que vemos el video, volvemos a vivir ese momento." },
+                { name: "Elena & Carlos", text: "Profesionalismo puro. El equipo se integró perfectamente y ni sentimos que estaban ahí, pero capturaron los momentos más íntimos." },
+                { name: "Sofia & Diego", text: "La calidad cinematográfica es de otro nivel. No es solo un video de boda, es una película de nuestra historia de amor." }
+            ];
+
             const content = {
                 paquetes: [
                     {
@@ -291,23 +304,107 @@
             };
 
             return (
-                <section className="py-32 bg-stone-950/50">
-                    <div className="container mx-auto px-6">
-                        <div className="text-center mb-20 animate-fade-in">
-                            <h2 className="text-6xl font-serif italic mb-6">Bodas.</h2>
-                            <p className="text-stone-500 italic">"No grabamos bodas, capturamos el inicio de un legado."</p>
+                <div className="bg-stone-950">
+                    {/* Header Bodas */}
+                    <section className="pt-40 pb-20 container mx-auto px-6 text-center">
+                        <span className="text-stone-600 uppercase tracking-[0.6em] text-[10px] mb-6 block">Wedding Films</span>
+                        <h2 className="text-6xl md:text-8xl font-serif italic mb-8">El arte de recordar.</h2>
+                        <p className="max-w-2xl mx-auto text-stone-500 italic text-lg md:text-xl">
+                            "No grabamos bodas, capturamos el inicio de un legado familiar a través de una lente cinematográfica."
+                        </p>
+                    </section>
+
+                    {/* Video Intro Section */}
+                    <section className="py-20 container mx-auto px-6">
+                        <div className="relative aspect-video rounded-[3rem] overflow-hidden glass p-2 group cursor-pointer">
+                            <div className="w-full h-full relative overflow-hidden rounded-[2.5rem]">
+                                <img src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2070" className="w-full h-full object-cover grayscale opacity-50 group-hover:scale-110 transition-transform duration-1000" />
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                    <div className="w-24 h-24 bg-white/10 backdrop-blur-xl border border-white/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                                        <Play size={32} className="text-white fill-white translate-x-1" />
+                                    </div>
+                                </div>
+                                <div className="absolute inset-x-0 bottom-0 p-12 bg-gradient-to-t from-black/80 to-transparent">
+                                    <h3 className="text-2xl font-serif italic mb-2">Conoce nuestra visión</h3>
+                                    <p className="text-stone-400 text-sm italic">David Estrella explica el proceso creativo detrás de cada boda.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Team Section */}
+                    <section className="py-32 container mx-auto px-6">
+                        <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
+                            <div>
+                                <span className="text-stone-600 uppercase tracking-[0.4em] text-[10px] mb-4 block">El Equipo</span>
+                                <h2 className="text-5xl md:text-6xl font-serif italic">Talento & Pasión.</h2>
+                            </div>
+                            <p className="max-w-md text-stone-500 text-sm leading-relaxed italic">
+                                Un equipo multidisciplinario enfocado en capturar cada detalle desde diferentes ángulos y perspectivas.
+                            </p>
                         </div>
 
-                        <div className="flex justify-center gap-4 mb-20">
-                            {['paquetes', 'extras'].map(t => (
-                                <button
-                                    key={t}
-                                    onClick={() => setActiveTab(t)}
-                                    className={`px-10 py-4 rounded-full text-[10px] uppercase tracking-widest font-bold transition-all ${activeTab === t ? 'bg-white text-black' : 'border border-stone-800 text-stone-500 hover:border-white'}`}
-                                >
-                                    {t}
-                                </button>
+                        <div className="grid md:grid-cols-4 gap-8">
+                            {team.map((member, i) => (
+                                <div key={i} className="group">
+                                    <div className="aspect-[3/4] rounded-3xl overflow-hidden glass p-1.5 mb-6">
+                                        <img src={member.img} className="w-full h-full object-cover rounded-[1.4rem] grayscale group-hover:grayscale-0 transition-all duration-700" />
+                                    </div>
+                                    <h4 className="text-xl font-serif italic mb-1">{member.name}</h4>
+                                    <p className="text-[10px] uppercase tracking-widest text-stone-600 font-bold">{member.role}</p>
+                                </div>
                             ))}
+                        </div>
+                    </section>
+
+                    {/* Philosophy & Testimonials */}
+                    <section className="py-32 bg-stone-900/30">
+                        <div className="container mx-auto px-6">
+                            <div className="grid lg:grid-cols-2 gap-32 items-center">
+                                <div>
+                                    <span className="text-stone-600 uppercase tracking-[0.4em] text-[10px] mb-4 block">Nuestra Filosofía</span>
+                                    <h2 className="text-5xl font-serif italic mb-10 leading-tight">Más que un video, <br />un legado visual.</h2>
+                                    <div className="space-y-6 text-stone-400 text-lg font-light leading-relaxed">
+                                        <p>
+                                            En cada boda buscamos ir más allá de la simple documentación. Buscamos la lágrima contenida, la risa espontánea y esos momentos que pasan desapercibidos para el ojo común.
+                                        </p>
+                                        <p>
+                                            Nuestra estética cinematográfica se basa en la luz natural y la composición orgánica, permitiendo que la historia se cuente de la manera más auténtica posible.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-12">
+                                    {testimonials.map((t, i) => (
+                                        <div key={i} className="glass p-10 rounded-3xl relative">
+                                            <Quote className="text-white/5 absolute top-6 right-6" size={60} />
+                                            <p className="text-stone-300 italic mb-6 relative z-10 font-light leading-relaxed">
+                                                "{t.text}"
+                                            </p>
+                                            <span className="text-white text-[10px] uppercase tracking-[0.3em] font-black">— {t.name}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Invest Section (Pricing) */}
+                    <section className="py-32 container mx-auto px-6">
+                        <div className="text-center mb-20">
+                            <span className="text-stone-600 uppercase tracking-[0.4em] text-[10px] mb-4 block">Inversión</span>
+                            <h2 className="text-5xl md:text-6xl font-serif italic mb-6">Paquetes de Bodas.</h2>
+                            <div className="flex justify-center gap-4 mt-12">
+                                {['paquetes', 'extras'].map(t => (
+                                    <button
+                                        key={t}
+                                        onClick={() => setActiveTab(t)}
+                                        className={`px-10 py-4 rounded-full text-[10px] uppercase tracking-widest font-bold transition-all ${activeTab === t ? 'bg-white text-black' : 'border border-stone-800 text-stone-500 hover:border-white'}`}
+                                    >
+                                        {t}
+                                    </button>
+                                ))}
+                            </div>
                         </div>
 
                         <div className="animate-fade-in">
@@ -364,21 +461,23 @@
                                 </div>
                             )}
 
-
                             {activeTab === 'extras' && (
-                                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                                     {content.extras.map(e => (
-                                        <div key={e.title} className="glass p-10 rounded-3xl text-center group hover:bg-white/5 transition-colors">
-                                            <Plus size={24} className="mx-auto mb-6 text-stone-700 group-hover:text-white group-hover:rotate-90 transition-all" />
-                                            <h4 className="text-xl font-serif italic mb-2">{e.title}</h4>
-                                            <p className="text-stone-500">{e.price}</p>
+                                        <div key={e.title} className="glass p-10 rounded-3xl flex flex-col group hover:bg-white/5 transition-colors border-white/5 hover:border-white/10">
+                                            <div className="flex justify-between items-start mb-6">
+                                                <Plus size={24} className="text-stone-700 group-hover:text-white group-hover:rotate-90 transition-all" />
+                                                <span className="text-white font-serif italic">{e.price}</span>
+                                            </div>
+                                            <h4 className="text-xl font-serif italic mb-4">{e.title}</h4>
+                                            <p className="text-stone-500 text-xs leading-relaxed italic">{e.desc}</p>
                                         </div>
                                     ))}
                                 </div>
                             )}
                         </div>
-                    </div>
-                </section>
+                    </section>
+                </div>
             );
         };
 
