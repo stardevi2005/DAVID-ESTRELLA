@@ -243,9 +243,44 @@
 
             const content = {
                 paquetes: [
-                    { title: "Esencial", price: "S/1,500", desc: "Lo perfecto para capturar lo más importante.", items: ["8 Horas de cobertura", "Highlight 3-5 min", "Entrega 15 días"] },
-                    { title: "Cinematográfico", price: "S/2,500", desc: "Nuestra experiencia más recomendada.", items: ["12 Horas de cobertura", "Same Day Edit", "Dron 4K incluido", "Película 20 min"] },
-                    { title: "Documental Pro", price: "S/3,800", desc: "El legado absoluto para tu familia.", items: ["Todo el evento", "2 Cámaras RAW", "Box Deluxe + USB", "Todo el día de cobertura"] }
+                    {
+                        title: "Eterno",
+                        price: "S/1,800",
+                        desc: "La experiencia completa y cinematográfica.",
+                        deliverables: [
+                            { name: "Reel al día siguiente", detail: "Obtén un increíble reel al dia siguiente de tu boda, listo para compartir mientras la magia sigue viva" },
+                            { name: "Trailer 1 min", detail: "Una obra maestra visual que condensa la magia de tu día de boda en un tráiler cinematográfico." },
+                            { name: "Video Resumen 1:30 - 3 min", detail: "Se encapsulan los momentos más románticos, miradas furtivas y abrazos sinceros." },
+                            { name: "Documental 45 min - 1:30 hr", detail: "La cinematografía se fusiona con el amor, creando un video documental completo." },
+                            { name: "50 Momentos Congelados", detail: "Revive cada instante especial con 50 fotogramas extraidos de tu video." },
+                            { name: "10 Momentos Impresos", detail: "Puedes escoger 10 momentos congelados para ser impresos en papel fotográfico de alta calidad" },
+                            { name: "Caja de Madera y USB", detail: "Recibe todo lo que incluye este paquete en una cajita de madera y un USB" }
+                        ],
+                        items: ["Drone incluido", "Producción hasta 12 horas", "Cobertura a 2 cámaras de video", "Equipo profesional de audio y video"],
+                        deliveryTime: "15-30 dias"
+                    },
+                    {
+                        title: "Clásico",
+                        price: "S/1,200",
+                        desc: "El equilibrio perfecto entre detalle y emoción.",
+                        deliverables: [
+                            { name: "Video Resumen 1:30 - 3 min", detail: "Se encapsulan los momentos más románticos, miradas furtivas y abrazos sinceros." },
+                            { name: "Documental 45 min - 1:30 hr", detail: "La cinematografía se fusiona con el amor, creando un video documental completo." },
+                            { name: "35 Momentos Congelados", detail: "Revive cada instante especial con 35 fotogramas extraidos de tu video." }
+                        ],
+                        items: ["Drone incluido", "Producción hasta 12 horas", "Cobertura a 2 cámaras de video", "Equipo profesional de audio y video"],
+                        deliveryTime: "15-30 dias"
+                    },
+                    {
+                        title: "Esencial",
+                        price: "S/1,000",
+                        desc: "Lo fundamental para no olvidar el gran día.",
+                        deliverables: [
+                            { name: "Documental 45 min - 1:30 hr", detail: "La cinematografía se fusiona con el amor, creando un video documental completo." }
+                        ],
+                        items: ["Producción hasta 8 horas", "Cobertura a 1 cámara de video", "Equipo profesional de audio y video"],
+                        deliveryTime: "15-30 dias"
+                    }
                 ],
                 ia: {
                     title: "Entrega asistida por IA",
@@ -253,10 +288,10 @@
                     features: ["Color Grading IA Inteligente", "Reducción de ruido por IA", "Reconocimiento facial para trailers"]
                 },
                 extras: [
-                    { title: "Pre-Boda", price: "S/400" },
-                    { title: "Dron Extra", price: "S/300" },
-                    { title: "Boda en Vivo", price: "S/600" },
-                    { title: "Crudos RAW", price: "S/500" }
+                    { title: "PRE BODA", price: "S/ 300", desc: "Realizamos una pre boda, una experiencia divertida" },
+                    { title: "TRASH THE DRESS", price: "S/ 400", desc: "Capturamos la espontaneidad y la emoción de romper con lo tradicional en una sesión después de la boda" },
+                    { title: "ARCHIVOS EN CRUDO", price: "S/ 500", desc: "Algunos momentos no salen en el video final, por eso te damos la oportunidad de revivirlos con los archivos en crudo" },
+                    { title: "USB", price: "S/ 120", desc: "Recibe un recuerdo donde estarán los archivos del dia de tu boda, en el cual te incluiremos 10 fotos impresas" }
                 ]
             };
 
@@ -285,18 +320,50 @@
                                 <div className="grid md:grid-cols-3 gap-8">
                                     {content.paquetes.map((p, i) => (
                                         <div key={i} className="glass p-12 rounded-[2.5rem] flex flex-col hover:-translate-y-2 transition-transform duration-500 border-white/5 hover:border-white/20">
-                                            <h3 className="text-2xl font-serif italic mb-2">{p.title}</h3>
-                                            <p className="text-4xl font-serif mb-8">{p.price}</p>
-                                            <div className="space-y-4 mb-12 flex-grow">
-                                                {p.items.map(it => (
-                                                    <div key={it} className="flex items-center gap-3 text-stone-500 text-sm">
-                                                        <Plus size={12} className="text-stone-700" /> {it}
-                                                    </div>
-                                                ))}
+                                            <div className="mb-8">
+                                                <h3 className="text-3xl font-serif italic mb-2">{p.title}</h3>
+                                                <p className="text-stone-500 text-sm italic mb-4">{p.desc}</p>
+                                                <p className="text-5xl font-serif">{p.price}</p>
                                             </div>
-                                            <button className="w-full bg-stone-900 border border-stone-800 py-4 rounded-xl text-[10px] uppercase tracking-widest font-black hover:bg-white hover:text-black transition-colors">
+
+                                            <div className="space-y-8 mb-12 flex-grow">
+                                                {p.deliverables && (
+                                                    <div>
+                                                        <span className="text-[10px] uppercase tracking-[0.3em] text-stone-600 font-bold block mb-4">Entregables</span>
+                                                        <div className="space-y-4">
+                                                            {p.deliverables.map(d => (
+                                                                <div key={d.name}>
+                                                                    <span className="text-white text-xs font-bold block uppercase tracking-wider">{d.name}</span>
+                                                                    <p className="text-stone-500 text-[11px] leading-relaxed">{d.detail}</p>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                )}
+
+                                                <div>
+                                                    <span className="text-[10px] uppercase tracking-[0.3em] text-stone-600 font-bold block mb-4">¿Qué incluye?</span>
+                                                    <div className="space-y-2">
+                                                        {p.items.map(it => (
+                                                            <div key={it} className="flex items-center gap-3 text-stone-400 text-[11px]">
+                                                                <Plus size={10} className="text-stone-700" /> {it}
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+
+                                                <div className="pt-6 border-t border-white/5">
+                                                    <span className="text-[9px] uppercase tracking-widest text-stone-600 block mb-1">Tiempo de entrega</span>
+                                                    <span className="text-white text-xs">{p.deliveryTime}</span>
+                                                </div>
+                                            </div>
+
+                                            <a
+                                                href={`https://wa.me/51970341772?text=Hola David, me interesa el paquete ${p.title}. ¿Podemos conversar?`}
+                                                className="w-full bg-stone-900 border border-stone-800 py-5 rounded-xl text-[10px] uppercase tracking-[0.3em] font-black text-center hover:bg-white hover:text-black transition-all"
+                                            >
                                                 Consultar Fecha
-                                            </button>
+                                            </a>
                                         </div>
                                     ))}
                                 </div>
