@@ -20,10 +20,37 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="index.css?v=3">
 
     <style>
-        /* Minimal inline styles to ensure core functionality if CSS fails to load */
+        /* Essential styles to guarantee requested design layout */
+        .ticker-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            border-radius: 9999px !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            background: rgba(255, 255, 255, 0.02) !important;
+            overflow: hidden;
+            padding: 0.5rem 0;
+            display: block !important;
+        }
+
+        .animate-ticker {
+            display: flex !important;
+            flex-direction: row !important;
+            width: max-content;
+        }
+
+        .brand-text-premium {
+            font-weight: 900 !important;
+            font-style: italic !important;
+            letter-spacing: 0.15em;
+        }
+
+        .social-btn {
+            border-radius: 9999px !important;
+        }
+
         #root {
             min-height: 100vh;
             background-color: #0a0a0a;
@@ -720,15 +747,17 @@
                 "APPLE", "SONY", "NIKE", "RED BULL", "CANON", "DJI", "ADIDAS"
             ];
             return (
-                <section className="py-20 bg-white/5 border-y border-white/5 overflow-hidden">
-                    <div className="animate-ticker">
-                        {[...brands, ...brands].map((brand, i) => (
-                            <div key={i} className="px-16 flex items-center justify-center">
-                                <span className="text-2xl md:text-4xl font-black text-stone-800 tracking-[0.2em] italic hover:text-white transition-colors cursor-default">
-                                    {brand}
-                                </span>
-                            </div>
-                        ))}
+                <section className="py-20 overflow-hidden">
+                    <div className="ticker-wrapper">
+                        <div className="animate-ticker">
+                            {[...brands, ...brands].map((brand, i) => (
+                                <div key={i} className="brand-item">
+                                    <span className="brand-text-premium">
+                                        {brand}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </section>
             );

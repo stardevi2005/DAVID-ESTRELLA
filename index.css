@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
 
 :root {
   --bg-dark: #0a0a0a;
@@ -53,55 +53,26 @@ body {
   animation: fadeIn 1s ease-out forwards;
 }
 
-.stagger-1 {
-  animation-delay: 0.2s;
+/* Ticker Styles */
+.ticker-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 0.5rem 0;
 }
 
-.stagger-2 {
-  animation-delay: 0.4s;
+.animate-ticker {
+  display: flex !important;
+  flex-direction: row !important;
+  width: max-content;
+  animation: ticker-animation 40s linear infinite;
 }
 
-.stagger-3 {
-  animation-delay: 0.6s;
-}
-
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: #0a0a0a;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #333;
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
-/* Social Card Hover */
-.social-card {
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.social-card:hover {
-  transform: translateY(-10px) scale(1.02);
-  border-color: rgba(255, 255, 255, 0.3);
-}
-
-.parallax-bg {
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-/* Logo Ticker */
-@keyframes ticker {
+@keyframes ticker-animation {
   0% {
     transform: translateX(0);
   }
@@ -111,45 +82,56 @@ body {
   }
 }
 
-.animate-ticker {
-  display: flex;
-  width: max-content;
-  animation: ticker 30s linear infinite;
-}
-
-.animate-ticker:hover {
-  animation-play-state: paused;
-}
-
-.social-btn {
-  display: flex;
+.brand-item {
+  display: flex !important;
   align-items: center;
-  gap: 1rem;
-  padding: 1rem 2rem;
-  border-radius: 1rem;
+  padding: 0.8rem 4rem;
+  position: relative;
+  white-space: nowrap;
+}
+
+.brand-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  height: 40%;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.brand-text-premium {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 900 !important;
+  font-style: italic !important;
+  font-size: 1.8rem !important;
+  letter-spacing: 0.15em;
+  color: #444;
+  /* Dark gray as per sample */
+  transition: all 0.4s cubic-bezier(0.2, 0, 0.2, 1);
+  user-select: none;
+}
+
+.brand-item:hover .brand-text-premium {
+  color: #fff;
+  transform: scale(1.1);
+}
+
+/* Social Buttons */
+.social-btn {
+  display: flex !important;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.2rem 2.8rem;
+  border-radius: 9999px !important;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
   position: relative;
 }
 
-.social-btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-  transition: 0.5s;
-}
-
-.social-btn:hover::before {
-  left: 100%;
-}
-
 .social-btn:hover {
   border-color: rgba(255, 255, 255, 0.4);
   transform: translateY(-5px);
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.08);
 }
