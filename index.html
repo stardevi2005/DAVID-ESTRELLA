@@ -282,11 +282,6 @@
                         deliveryTime: "15-30 dias"
                     }
                 ],
-                ia: {
-                    title: "Entrega asistida por IA",
-                    desc: "Utilizamos algoritmos avanzados para procesar tus videos en tiempo récord sin perder la esencia humana. El futuro de la cinematografía hoy.",
-                    features: ["Color Grading IA Inteligente", "Reducción de ruido por IA", "Reconocimiento facial para trailers"]
-                },
                 extras: [
                     { title: "PRE BODA", price: "S/ 300", desc: "Realizamos una pre boda, una experiencia divertida" },
                     { title: "TRASH THE DRESS", price: "S/ 400", desc: "Capturamos la espontaneidad y la emoción de romper con lo tradicional en una sesión después de la boda" },
@@ -304,13 +299,13 @@
                         </div>
 
                         <div className="flex justify-center gap-4 mb-20">
-                            {['paquetes', 'ia', 'extras'].map(t => (
+                            {['paquetes', 'extras'].map(t => (
                                 <button
                                     key={t}
                                     onClick={() => setActiveTab(t)}
                                     className={`px-10 py-4 rounded-full text-[10px] uppercase tracking-widest font-bold transition-all ${activeTab === t ? 'bg-white text-black' : 'border border-stone-800 text-stone-500 hover:border-white'}`}
                                 >
-                                    {t === 'ia' ? 'IA Creativa' : t}
+                                    {t}
                                 </button>
                             ))}
                         </div>
@@ -369,27 +364,6 @@
                                 </div>
                             )}
 
-                            {activeTab === 'ia' && (
-                                <div className="glass p-16 rounded-[3rem] flex flex-col md:flex-row gap-16 items-center">
-                                    <div className="md:w-1/2">
-                                        <div className="w-20 h-20 bg-white/5 rounded-3xl flex items-center justify-center mb-10">
-                                            <Sparkles className="text-white" size={32} />
-                                        </div>
-                                        <h3 className="text-4xl font-serif italic mb-6">{content.ia.title}</h3>
-                                        <p className="text-stone-400 text-lg leading-relaxed mb-10">{content.ia.desc}</p>
-                                        <ul className="space-y-4">
-                                            {content.ia.features.map(f => (
-                                                <li key={f} className="flex items-center gap-4 text-stone-300">
-                                                    <div className="w-2 h-2 bg-white rounded-full"></div> {f}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                    <div className="md:w-1/2 relative aspect-video rounded-3xl overflow-hidden glass p-1">
-                                        <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=2070" className="w-full h-full object-cover rounded-[1.4rem] grayscale opacity-40 hover:opacity-100 transition-opacity" />
-                                    </div>
-                                </div>
-                            )}
 
                             {activeTab === 'extras' && (
                                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
