@@ -16,9 +16,8 @@
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-    <!-- Lucide Icons -->
+    <!-- Lucide Icons (Base) -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://unpkg.com/lucide-react@latest/dist/umd/lucide-react.min.js"></script>
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="index.css">
@@ -46,12 +45,42 @@
          */
 
         const { useState, useEffect, useRef } = React;
-        const {
-            Camera, Play, Instagram, Phone, Mail,
-            ChevronRight, Quote, Info, Image,
-            Monitor, Sparkles, Plus, Star, Menu, X,
-            ArrowUpRight, Heart, Share2, Award
-        } = LucideReact;
+
+        // Custom Icon Factory to avoid CDN Lucide-React issues
+        const createIcon = (name) => (props) => {
+            const icon = lucide.icons[name];
+            if (!icon) return null;
+            const [tag, attrs, children] = icon;
+            return React.createElement(tag, {
+                ...attrs,
+                ...props,
+                dangerouslySetInnerHTML: {
+                    __html: children.map(([cTag, cAttrs]) =>
+                        `<${cTag} ${Object.entries(cAttrs).map(([k, v]) => `${k}="${v}"`).join(' ')} />`
+                    ).join('')
+                }
+            });
+        };
+
+        const Camera = createIcon('Camera');
+        const Play = createIcon('Play');
+        const Instagram = createIcon('Instagram');
+        const Phone = createIcon('Phone');
+        const Mail = createIcon('Mail');
+        const ChevronRight = createIcon('ChevronRight');
+        const Quote = createIcon('Quote');
+        const Info = createIcon('Info');
+        const Image = createIcon('Image');
+        const Monitor = createIcon('Monitor');
+        const Sparkles = createIcon('Sparkles');
+        const Plus = createIcon('Plus');
+        const Star = createIcon('Star');
+        const Menu = createIcon('Menu');
+        const X = createIcon('X');
+        const ArrowUpRight = createIcon('ArrowUpRight');
+        const Heart = createIcon('Heart');
+        const Share2 = createIcon('Share2');
+        const Award = createIcon('Award');
 
         // --- GLOBAL COMPONENTS ---
 
