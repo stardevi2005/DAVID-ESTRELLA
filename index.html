@@ -240,12 +240,41 @@
 
         const WeddingSubSection = () => {
             const [activeTab, setActiveTab] = useState('paquetes');
+            const [selectedMember, setSelectedMember] = useState(null);
 
             const team = [
-                { name: "David Estrella", role: "Filmmaker Principal", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974" },
-                { name: "Alonso Padilla", role: "Filmmaker Secundario", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1974" },
-                { name: "Cristian Uribe", role: "Fotógrafo Principal", img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2070" },
-                { name: "Junior Rabor", role: "Fotógrafo Secundario", img: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1974" }
+                {
+                    name: "David Estrella",
+                    role: "Filmmaker Principal",
+                    img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974",
+                    bio: "Cinematógrafo con más de 10 años capturando historias de amor. Especializado en narrativa visual de alto impacto.",
+                    type: 'video',
+                    portfolio: "Showreel 2024"
+                },
+                {
+                    name: "Alonso Padilla",
+                    role: "Filmmaker Secundario",
+                    img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1974",
+                    bio: "Experto en edición rítmica y tomas dinámicas que elevan la energía de cada evento.",
+                    type: 'video',
+                    portfolio: "Showreel 2024"
+                },
+                {
+                    name: "Cristian Uribe",
+                    role: "Fotógrafo Principal",
+                    img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2070",
+                    bio: "Buscando la luz perfecta en cada disparo. Cristian se especializa en retratos espontáneos y elegantes.",
+                    type: 'photo',
+                    photos: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                },
+                {
+                    name: "Junior Rabor",
+                    role: "Fotógrafo Secundario",
+                    img: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1974",
+                    bio: "Atento a los detalles que otros pasan por alto. Junior captura la esencia pura de la celebración.",
+                    type: 'photo',
+                    photos: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                }
             ];
 
             const testimonials = [
@@ -303,6 +332,68 @@
                 ]
             };
 
+            if (selectedMember) {
+                return (
+                    <div className="min-h-screen bg-stone-950 pt-40 pb-20 animate-fade-in relative">
+                        <div className="container mx-auto px-6">
+                            <button
+                                onClick={() => setSelectedMember(null)}
+                                className="flex items-center gap-2 text-stone-500 hover:text-white transition-all uppercase tracking-[0.3em] text-[10px] mb-16 group"
+                            >
+                                <ChevronRight className="rotate-180 group-hover:-translate-x-1 transition-transform" size={14} /> Volver a Bodas
+                            </button>
+
+                            <div className="grid lg:grid-cols-2 gap-20 items-center mb-32">
+                                <div className="aspect-[3/4] rounded-3xl overflow-hidden glass p-2 max-w-md mx-auto lg:mx-0">
+                                    <img src={selectedMember.img} className="w-full h-full object-cover rounded-[1.8rem] grayscale" />
+                                </div>
+                                <div className="space-y-8 text-center lg:text-left">
+                                    <div>
+                                        <span className="text-stone-600 uppercase tracking-[0.4em] text-[10px] mb-4 block">{selectedMember.role}</span>
+                                        <h2 className="text-6xl md:text-8xl font-serif italic">{selectedMember.name}</h2>
+                                    </div>
+                                    <p className="text-stone-400 text-xl font-light italic leading-relaxed">
+                                        "{selectedMember.bio}"
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div className="border-t border-white/5 pt-32">
+                                <div className="text-center mb-20">
+                                    <span className="text-stone-600 uppercase tracking-[0.4em] text-[10px] mb-4 block">Portafolio Individual</span>
+                                    <h3 className="text-5xl font-serif italic">Selección de Trabajo.</h3>
+                                </div>
+
+                                {selectedMember.type === 'video' ? (
+                                    <div className="aspect-video glass p-2 rounded-[3rem] overflow-hidden max-w-5xl mx-auto">
+                                        <div className="w-full h-full bg-stone-900 rounded-[2.5rem] flex items-center justify-center relative overflow-hidden group">
+                                            <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=2071" className="absolute inset-0 w-full h-full object-cover opacity-20 grayscale group-hover:scale-105 transition-transform duration-1000" />
+                                            <div className="relative z-10 text-center">
+                                                <div className="w-24 h-24 bg-white/10 backdrop-blur-xl border border-white/20 rounded-full flex items-center justify-center mx-auto mb-8 cursor-pointer hover:scale-110 transition-transform">
+                                                    <Play fill="white" size={32} className="translate-x-1" />
+                                                </div>
+                                                <span className="text-[10px] uppercase tracking-[0.4em] font-black text-white/40">{selectedMember.portfolio} / {selectedMember.name}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+                                        {(selectedMember.photos || []).map(n => (
+                                            <div key={n} className="aspect-square rounded-2xl overflow-hidden glass p-1.5 hover:-translate-y-1 transition-transform duration-500">
+                                                <img
+                                                    src={`https://images.unsplash.com/photo-${1519741497674 + n}-611481863552?q=80&w=500`}
+                                                    className="w-full h-full object-cover rounded-xl grayscale hover:grayscale-0 transition-all duration-700"
+                                                />
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
             return (
                 <div className="bg-stone-950">
                     {/* Header Bodas */}
@@ -346,9 +437,16 @@
 
                         <div className="grid md:grid-cols-4 gap-8">
                             {team.map((member, i) => (
-                                <div key={i} className="group">
-                                    <div className="aspect-[3/4] rounded-3xl overflow-hidden glass p-1.5 mb-6">
+                                <div
+                                    key={i}
+                                    className="group cursor-pointer"
+                                    onClick={() => setSelectedMember(member)}
+                                >
+                                    <div className="aspect-[3/4] rounded-3xl overflow-hidden glass p-1.5 mb-6 relative">
                                         <img src={member.img} className="w-full h-full object-cover rounded-[1.4rem] grayscale group-hover:grayscale-0 transition-all duration-700" />
+                                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                            <span className="text-[10px] uppercase tracking-widest font-black border border-white/20 px-4 py-2 rounded-full backdrop-blur-md">Ver Perfil</span>
+                                        </div>
                                     </div>
                                     <h4 className="text-xl font-serif italic mb-1">{member.name}</h4>
                                     <p className="text-[10px] uppercase tracking-widest text-stone-600 font-bold">{member.role}</p>
