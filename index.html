@@ -92,6 +92,8 @@
         const Heart = createIcon('Heart');
         const Share2 = createIcon('Share2');
         const Award = createIcon('Award');
+        const Youtube = createIcon('Youtube');
+        const Music = createIcon('Music');
 
         // --- GLOBAL COMPONENTS ---
 
@@ -107,7 +109,6 @@
 
             const links = [
                 { id: 'home', label: 'Inicio' },
-                { id: 'about', label: 'David' },
                 { id: 'weddings', label: 'Bodas' },
                 { id: 'social', label: 'Social Content' },
                 { id: 'works', label: 'Portafolio' },
@@ -687,8 +688,100 @@
             </section>
         );
 
+        const GeneralTestimonials = () => {
+            const reviews = [
+                { name: "Juan Pérez", text: "Un profesional de primer nivel. David entiende perfectamente lo que el cliente quiere transmitir." },
+                { name: "Lucía García", text: "La calidad de imagen y la narrativa de sus videos es simplemente impresionante. Muy recomendado." },
+                { name: "Andrés Rodríguez", text: "Excelente trabajo entregado a tiempo. Su visión artística eleva cualquier proyecto." }
+            ];
+            return (
+                <section className="py-32 bg-stone-900/10">
+                    <div className="container mx-auto px-6">
+                        <div className="text-center mb-20">
+                            <span className="text-stone-600 uppercase tracking-[0.4em] text-[10px] mb-4 block">Testimonios</span>
+                            <h2 className="text-5xl font-serif italic">Clientes Satisfechos.</h2>
+                        </div>
+                        <div className="grid md:grid-cols-3 gap-8">
+                            {reviews.map((r, i) => (
+                                <div key={i} className="glass p-12 rounded-[2.5rem] relative">
+                                    <Quote className="text-white/5 absolute top-6 right-6" size={40} />
+                                    <p className="text-stone-400 italic mb-8 font-light italic leading-relaxed">"{r.text}"</p>
+                                    <span className="text-white text-[10px] uppercase tracking-widest font-black">— {r.name}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        const ClientsTicker = () => {
+            const brands = [
+                "APPLE", "SONY", "NIKE", "RED BULL", "CANON", "DJI", "ADIDAS"
+            ];
+            return (
+                <section className="py-20 bg-white/5 border-y border-white/5 overflow-hidden">
+                    <div className="animate-ticker">
+                        {[...brands, ...brands].map((brand, i) => (
+                            <div key={i} className="px-16 flex items-center justify-center">
+                                <span className="text-2xl md:text-4xl font-black text-stone-800 tracking-[0.2em] italic hover:text-white transition-colors cursor-default">
+                                    {brand}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            );
+        };
+
+        const SocialLinksSection = () => (
+            <section className="py-32 container mx-auto px-6 text-center">
+                <div className="mb-20">
+                    <span className="text-stone-600 uppercase tracking-[0.4em] text-[10px] mb-4 block">Conectemos</span>
+                    <h2 className="text-5xl md:text-7xl font-serif italic">Mi mundo digital.</h2>
+                </div>
+                <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                    <a href="https://www.tiktok.com/@davidestrella_." target="_blank" className="social-btn group">
+                        <Music className="text-stone-500 group-hover:text-white transition-colors" />
+                        <div className="text-left">
+                            <span className="block text-stone-600 text-[9px] uppercase tracking-widest font-black">Sigueme en</span>
+                            <span className="text-lg font-bold">TikTok</span>
+                        </div>
+                        <ArrowUpRight size={16} className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </a>
+                    <a href="https://www.instagram.com/davidestrella___/" target="_blank" className="social-btn group">
+                        <Instagram className="text-stone-500 group-hover:text-white transition-colors" />
+                        <div className="text-left">
+                            <span className="block text-stone-600 text-[9px] uppercase tracking-widest font-black">Sigueme en</span>
+                            <span className="text-lg font-bold">Instagram</span>
+                        </div>
+                        <ArrowUpRight size={16} className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </a>
+                    <a href="https://www.youtube.com/@DavidEstreIla_." target="_blank" className="social-btn group">
+                        <Youtube className="text-stone-500 group-hover:text-white transition-colors" />
+                        <div className="text-left">
+                            <span className="block text-stone-600 text-[9px] uppercase tracking-widest font-black">Suscribete en</span>
+                            <span className="text-lg font-bold">YouTube</span>
+                        </div>
+                        <ArrowUpRight size={16} className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </a>
+                </div>
+            </section>
+        );
+
+        const HomeView = ({ onNavigate }) => (
+            <div className="animate-fade-in">
+                <HeroSession onNavigate={onNavigate} />
+                <AboutSection />
+                <ClientsTicker />
+                <WorksSection />
+                <GeneralTestimonials />
+                <SocialLinksSection />
+            </div>
+        );
+
         const Footer = () => (
-            <footer className="py-20 border-t border-white/5">
+            <footer className="py-20 border-t border-white/5 bg-stone-950">
                 <div className="container mx-auto px-6 text-center">
                     <p className="text-stone-700 text-[10px] uppercase tracking-[0.5em]">
                         &copy; 2024 David Estrella Filmmaker. Todos los derechos reservados.
@@ -704,13 +797,12 @@
 
             const renderContent = () => {
                 switch (section) {
-                    case 'home': return <HeroSession onNavigate={setSection} />;
-                    case 'about': return <AboutSection />;
+                    case 'home': return <HomeView onNavigate={setSection} />;
                     case 'weddings': return <WeddingSubSection />;
                     case 'social': return <SocialMediaSection />;
                     case 'works': return <WorksSection />;
                     case 'contact': return <ContactSection />;
-                    default: return <HeroSession onNavigate={setSection} />;
+                    default: return <HomeView onNavigate={setSection} />;
                 }
             };
 
