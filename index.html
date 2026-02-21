@@ -756,7 +756,310 @@
             );
         };
 
-        const GraduacionesSection = ({ onNavigate }) => {
+        const CeremonyGalleryUNAP2026 = ({ onNavigate }) => {
+            const CONFIG = {
+                API_KEY: "AIzaSyDQtuaas4lv62ZSR79hQsRzuljxUZPc0Fg",
+                FOLDER_ID: "1-pEcrb-lpVU0wFp8WuoS48_Y8izPqLDR",
+                EVENT_NAME: "Ceremonia de Graduación",
+            };
+
+            const [photos, setPhotos] = useState([]);
+            const [loading, setLoading] = useState(true);
+            const [selectedPhoto, setSelectedPhoto] = useState(null);
+            const [error, setError] = useState(null);
+            const [currentPage, setCurrentPage] = useState(1);
+            const photosPerPage = 30;
+
+            useEffect(() => {
+                const fetchPhotos = async () => {
+                    try {
+                        let allFiles = [];
+                        let pageToken = null;
+                        const query = encodeURIComponent(`'${CONFIG.FOLDER_ID}' in parents and mimeType contains 'image/' and trashed = false`);
+                        const fields = encodeURIComponent('nextPageToken, files(id, name, webContentLink, thumbnailLink, mimeType)');
+
+                        do {
+                            const url = `https://www.googleapis.com/drive/v3/files?q=${query}&orderBy=name&fields=${fields}&key=${CONFIG.API_KEY}&pageSize=1000${pageToken ? `&pageToken=${pageToken}` : ''}`;
+                            const response = await fetch(url);
+                            if (!response.ok) throw new Error("No se pudo conectar a Google Drive. Verifica tu API Key o los permisos de la carpeta.");
+                            const data = await response.json();
+
+                            if (data.files && data.files.length > 0) {
+                                allFiles = allFiles.concat(data.files);
+                            }
+                            pageToken = data.nextPageToken;
+                        } while (pageToken);
+
+                        let optimizedFiles = [];
+
+                        if (allFiles.length > 0) {
+                            // Ordenar de forma "natural" (numérica) para que "foto-2" vaya antes que "foto-10"
+                            allFiles.sort((a, b) => a.name.localeCompare(b.name, undefined, {
+                                numeric: true,
+                                sensitivity: 'base'
+                            }));
+
+                            optimizedFiles = allFiles.map(file => ({
+                                ...file,
+                                thumbnailLink: file.thumbnailLink ? file.thumbnailLink.replace('=s220', '=s1000') : null,
+                                directLink: `https://drive.google.com/uc?id=${file.id}`
+                            }));
+                            // Guardar fotos en el orden numérico correcto (Inicio a Fin)
+                            setPhotos(optimizedFiles);
+                        }
+                        setLoading(false);
+                    } catch (err) {
+                        console.error("Error al cargar fotos:", err);
+                        setError(err.message);
+                        setLoading(false);
+                    }
+                };
+                fetchPhotos();
+
+                // Scroll to top when mounted
+                window.scrollTo(0, 0);
+            }, [CONFIG.API_KEY, CONFIG.FOLDER_ID]);
+
+            // Bloquear el scroll del fondo mientras está abierto el modal
+            useEffect(() => {
+                if (selectedPhoto) {
+                    document.body.style.overflow = 'hidden';
+                    document.body.style.touchAction = 'none'; // Evitar gestos de scroll móvil
+                } else {
+                    document.body.style.overflow = '';
+                    document.body.style.touchAction = '';
+                }
+                return () => {
+                    document.body.style.overflow = '';
+                    document.body.style.touchAction = '';
+                };
+            }, [selectedPhoto]);
+
+            const downloadPhoto = (id) => {
+                if (!id) return;
+                // Forzar la descarga directa enviando al usuario al endpoint de exportación
+                window.location.href = `https://drive.google.com/uc?export=download&id=${id}`;
+            };
+
+            // Lógica de paginación
+            const indexOfLastPhoto = currentPage * photosPerPage;
+            const indexOfFirstPhoto = indexOfLastPhoto - photosPerPage;
+            const currentPhotos = photos.slice(indexOfFirstPhoto, indexOfLastPhoto);
+            const totalPages = Math.ceil(photos.length / photosPerPage);
+
+            const paginate = (pageNumber) => {
+                setCurrentPage(pageNumber);
+                // Scroll suave al inicio de la galería (compensando el header)
+                window.scrollTo({ top: window.innerHeight * 0.7, behavior: 'smooth' });
+            };
+
+            return (
+                <div className="min-h-screen bg-[#f9f9f9] text-neutral-900 font-sans mt-20 md:mt-0 animate-fade-in relative z-10 w-full mb-0 pb-0 flex flex-col items-stretch">
+                    <style dangerouslySetInnerHTML={{
+                        __html: `
+                @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&display=swap');
+                .font-cinzel { font-family: 'Cinzel', serif; }
+                .font-playfair { font-family: 'Playfair Display', serif; }
+              `}} />
+
+                    {/* Botón de volver */}
+                    <button
+                        onClick={() => onNavigate('graduaciones')}
+                        className="absolute top-6 left-6 z-50 bg-black/50 hover:bg-black text-white px-4 py-2 rounded-full backdrop-blur-md flex items-center gap-2 transition-all uppercase tracking-widest text-[10px]"
+                    >
+                        Volver
+                    </button>
+
+                    <header className="relative w-full min-h-[70vh] bg-[#151515] flex items-center justify-center overflow-hidden border-b-[6px] border-[#c5a059] py-20 px-4">
+                        <StarryBackground />
+                        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#151515]/50 to-[#151515] pointer-events-none"></div>
+
+                        <div className="relative z-10 w-full max-w-5xl mx-auto flex flex-col items-center text-center mt-8">
+                            <div className="hidden md:block absolute -top-8 right-4 text-center drop-shadow-lg">
+                                <div className="text-[#e2c779] font-playfair italic text-5xl mb-1">31</div>
+                                <div className="text-[#e2c779] font-playfair italic text-2xl tracking-wide">Enero</div>
+                                <div className="text-[#e2c779] font-playfair italic text-2xl tracking-widest mt-1">2026</div>
+                            </div>
+
+                            <div className="relative mb-6">
+                                <GraduationCap size={130} color="#c5a059" fill="#2d5a40" strokeWidth={1} className="drop-shadow-[0_15px_15px_rgba(0,0,0,0.8)] transform -rotate-3" />
+                            </div>
+
+                            <h1 className="text-[#e2c779] text-6xl md:text-8xl font-playfair italic drop-shadow-[0_4px_4px_rgba(0,0,0,0.5)] mb-6 leading-tight">
+                                Ceremonia de<br />Graduación
+                            </h1>
+
+                            <p className="text-[#c5a059] text-xs md:text-lg font-cinzel tracking-[0.2em] md:tracking-[0.3em] uppercase drop-shadow-md px-4 mt-2">
+                                "Formados para cuidar, listos para liderar"
+                            </p>
+
+                            <div className="md:hidden mt-12 pt-6 border-t border-[#c5a059]/30 w-3/4 mx-auto">
+                                <div className="text-[#e2c779] font-playfair italic text-3xl">31 Enero 2026</div>
+                            </div>
+                        </div>
+                    </header>
+
+                    <main className="max-w-7xl mx-auto py-16 px-4 md:px-8 w-full flex-grow">
+                        <div className="text-center mb-12">
+                            <h2 className="text-xl md:text-2xl font-cinzel text-neutral-800 tracking-widest uppercase mb-4">
+                                Galería de Recuerdos
+                            </h2>
+                            <div className="h-px w-20 bg-[#c5a059] mx-auto"></div>
+                        </div>
+
+                        {loading ? (
+                            <div className="flex flex-col items-center justify-center py-20 text-[#c5a059]">
+                                <Loader2 className="animate-spin mb-4" size={40} strokeWidth={1.5} />
+                                <p className="font-playfair italic text-lg text-neutral-500">Preparando la galería...</p>
+                            </div>
+                        ) : error ? (
+                            <div className="max-w-md mx-auto text-center py-20 px-6 bg-white border border-red-100 rounded-lg shadow-sm">
+                                <AlertCircle className="mx-auto mb-4 text-red-400" size={48} />
+                                <h2 className="text-lg font-medium text-neutral-800 mb-2">Aviso</h2>
+                                <p className="text-sm text-neutral-500 mb-6">{error}</p>
+                            </div>
+                        ) : photos.length === 0 ? (
+                            <div className="text-center py-20 text-neutral-400">
+                                <ImageIcon className="mx-auto mb-4 opacity-20" size={64} />
+                                <p className="font-playfair italic text-xl text-neutral-600 mb-2">Aún no hay fotos disponibles.</p>
+                                <p className="text-sm text-neutral-500">Las imágenes aparecerán aquí automáticamente una vez que se suban a tu carpeta de Drive.</p>
+                            </div>
+                        ) : (
+                            <>
+                                <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+                                    {currentPhotos.map((photo) => (
+                                        <div key={photo.id} className="relative group overflow-hidden bg-neutral-200 break-inside-avoid shadow-sm hover:shadow-2xl transition-all duration-700 rounded-sm min-h-[250px] flex items-center justify-center">
+                                            {/* Fallback element visible before image loads */}
+                                            <div className="absolute inset-0 flex items-center justify-center text-neutral-400">
+                                                <ImageIcon size={32} className="opacity-30" />
+                                            </div>
+                                            <img
+                                                src={photo.thumbnailLink || photo.directLink}
+                                                onError={(e) => {
+                                                    if (e.target.src !== photo.directLink) {
+                                                        // Fallback to strict UC endpoint
+                                                        e.target.src = `https://drive.google.com/uc?export=view&id=${photo.id}`;
+                                                    } else {
+                                                        e.target.style.opacity = '0';
+                                                    }
+                                                }}
+                                                alt={photo.name}
+                                                loading="lazy"
+                                                className="relative z-10 w-full h-auto object-cover transition-transform duration-1000 group-hover:scale-105 cursor-pointer bg-neutral-200"
+                                                onClick={() => setSelectedPhoto(photo)}
+                                            />
+                                            <div className="absolute z-20 inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                                                <div className="flex justify-between items-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                                                    <button onClick={() => setSelectedPhoto(photo)} className="flex items-center gap-2 text-[#e2c779] text-xs tracking-widest uppercase font-cinzel">
+                                                        <ZoomIn size={18} strokeWidth={2} /> Ver
+                                                    </button>
+                                                    <button onClick={(e) => { e.stopPropagation(); downloadPhoto(photo.id); }} className="p-3 bg-[#c5a059] text-white rounded-full hover:bg-[#b08d4a] transition-colors shadow-lg" title="Descargar Original">
+                                                        <Download size={18} />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                {/* Controles de Paginación Comprimidos */}
+                                {totalPages > 1 && (
+                                    <div className="flex justify-center items-center mt-16 gap-2">
+                                        <button
+                                            onClick={() => paginate(currentPage - 1)}
+                                            disabled={currentPage === 1}
+                                            className="px-4 py-2 border border-[#c5a059]/30 text-[#c5a059] rounded-sm disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#c5a059]/10 transition-colors font-cinzel text-xs uppercase tracking-widest"
+                                        >
+                                            Anterior
+                                        </button>
+
+                                        <div className="flex gap-1 overflow-x-auto max-w-[200px] md:max-w-none px-2 scrollbar-hide py-2 items-center">
+                                            {(() => {
+                                                const pageNumbers = [];
+                                                const maxVisiblePages = 5;
+
+                                                if (totalPages <= maxVisiblePages) {
+                                                    for (let i = 1; i <= totalPages; i++) pageNumbers.push(i);
+                                                } else {
+                                                    if (currentPage <= 3) {
+                                                        pageNumbers.push(1, 2, 3, 4, '...', totalPages);
+                                                    } else if (currentPage >= totalPages - 2) {
+                                                        pageNumbers.push(1, '...', totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+                                                    } else {
+                                                        pageNumbers.push(1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages);
+                                                    }
+                                                }
+
+                                                return pageNumbers.map((num, i) => (
+                                                    num === '...' ? (
+                                                        <span key={`ellipsis-${i}`} className="w-8 h-8 flex items-center justify-center text-neutral-400 font-playfair">...</span>
+                                                    ) : (
+                                                        <button
+                                                            key={`page-${num}`}
+                                                            onClick={() => paginate(num)}
+                                                            className={`w-8 h-8 flex items-center justify-center rounded-sm text-xs font-playfair transition-all flex-shrink-0 ${currentPage === num
+                                                                ? 'bg-[#c5a059] text-white shadow-md'
+                                                                : 'border border-neutral-300 text-neutral-500 hover:border-[#c5a059] hover:text-[#c5a059]'
+                                                                }`}
+                                                        >
+                                                            {num}
+                                                        </button>
+                                                    )
+                                                ));
+                                            })()}
+                                        </div>
+
+                                        <button
+                                            onClick={() => paginate(currentPage + 1)}
+                                            disabled={currentPage === totalPages}
+                                            className="px-4 py-2 border border-[#c5a059]/30 text-[#c5a059] rounded-sm disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#c5a059]/10 transition-colors font-cinzel text-xs uppercase tracking-widest"
+                                        >
+                                            Siguiente
+                                        </button>
+                                    </div>
+                                )}
+                            </>
+                        )}
+                    </main>
+
+                    {selectedPhoto && ReactDOM.createPortal(
+                        <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/95 backdrop-blur-sm p-4 sm:p-6 md:p-8 animate-in fade-in duration-200" onClick={() => setSelectedPhoto(null)}>
+                            <button onClick={(e) => { e.stopPropagation(); setSelectedPhoto(null); }} className="absolute top-4 right-4 md:top-6 md:right-6 p-2 md:p-3 bg-black/50 text-white rounded-full hover:bg-white/20 hover:text-[#e2c779] backdrop-blur-md transition-all z-[110] shadow-lg flex items-center gap-2 cursor-pointer">
+                                <span className="hidden md:block text-xs uppercase tracking-widest font-cinzel ml-2">Cerrar</span>
+                                <X size={24} strokeWidth={2} />
+                            </button>
+
+                            <div className="flex flex-col items-center justify-center w-full max-w-6xl relative z-[105]" onClick={(e) => e.stopPropagation()}>
+                                <img
+                                    src={selectedPhoto.thumbnailLink || selectedPhoto.webContentLink}
+                                    alt={selectedPhoto.name}
+                                    className="max-w-full w-auto h-auto object-contain drop-shadow-2xl rounded-sm transition-opacity duration-300 pointer-events-none select-none"
+                                    style={{ maxHeight: 'calc(100vh - 140px)' }}
+                                />
+
+                                <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 w-full mt-5 justify-center">
+                                    <button onClick={(e) => { e.stopPropagation(); setSelectedPhoto(null); }} className="flex items-center gap-3 px-8 py-3 bg-transparent border-2 border-[#c5a059] text-[#c5a059] hover:bg-[#c5a059]/10 transition-all tracking-widest uppercase text-xs font-cinzel rounded-sm w-full sm:w-auto justify-center cursor-pointer">
+                                        Volver a la Galería
+                                    </button>
+                                    <button onClick={(e) => { e.stopPropagation(); downloadPhoto(selectedPhoto.id); }} className="flex items-center gap-3 px-8 py-3 bg-[#c5a059] text-white hover:bg-[#b08d4a] transition-all tracking-widest uppercase text-xs font-cinzel rounded-sm shadow-[0_0_15px_rgba(197,160,89,0.3)] hover:shadow-[0_0_25px_rgba(197,160,89,0.5)] active:scale-95 w-full sm:w-auto justify-center cursor-pointer">
+                                        <Download size={18} /> Descargar Original
+                                    </button>
+                                </div>
+                            </div>
+                        </div>,
+                        document.body
+                    )}
+
+                    <footer className="py-16 px-6 text-center border-t border-neutral-200 bg-[#151515] text-[#e2c779] w-full mt-auto">
+                        <div className="max-w-xs mx-auto mb-6 h-px bg-[#c5a059]/30"></div>
+                        <p className="text-[10px] uppercase tracking-[0.3em] mb-3 text-[#e2c779]/70 font-cinzel">UNAP • Promoción 2026</p>
+                        <p className="text-xs font-light text-[#e2c779]/50 font-playfair italic">"Formados para cuidar, listos para liderar"</p>
+                    </footer>
+                </div>
+            );
+        };
+
+                const GraduacionesSection = ({ onNavigate }) => {
             const galleries = [
                 {
                     id: 'graduacion-unap-2026',
@@ -764,6 +1067,14 @@
                     subtitle: "Enfermería UNAP 2026",
                     date: "Enero 2026",
                     img: "https://images.unsplash.com/photo-1523580494863-6f3031224c94?q=80&w=2070",
+                    accent: "from-[#2d5a40]/60" // verde enfermeria
+                },
+                                {
+                    id: 'ceremonia-unap-2026',
+                    title: "Ceremonia de Graduación",
+                    subtitle: "Enfermería UNAP 2026",
+                    date: "Enero 2026",
+                    img: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070",
                     accent: "from-[#2d5a40]/60" // verde enfermeria
                 },
                 // Futuros eventos irían aquí
@@ -1001,6 +1312,7 @@
                     case 'trabajos': return <TrabajosSection onNavigate={setSection} />;
                     case 'graduaciones': return <GraduacionesSection onNavigate={setSection} />;
                     case 'graduacion-unap-2026': return <GraduationGalleryUNAP2026 onNavigate={setSection} />;
+                    case 'ceremonia-unap-2026': return <CeremonyGalleryUNAP2026 onNavigate={setSection} />;
                     case 'contact': return <ContactSection />;
                     default: return <HomeView onNavigate={setSection} />;
                 }
