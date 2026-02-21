@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 120">
+  <!-- Dynamic Logo for STRELLA -->
+  <style>
+    .serif { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 700; fill: #ffffff; font-size: 80px; letter-spacing: -0.05em; }
+    .branding { font-family: 'Outfit', sans-serif; font-weight: 900; fill: #ffffff; font-size: 14px; letter-spacing: 0.4em; text-transform: uppercase; }
+  </style>
+  <text x="50%" y="70" text-anchor="middle" class="serif">STRELLA.</text>
+  <text x="50%" y="105" text-anchor="middle" class="branding">PRODUCTORA AUDIOVISUAL</text>
+</svg>
