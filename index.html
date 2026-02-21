@@ -940,7 +940,42 @@
         // --- APP ENTRY POINT ---
 
         const App = () => {
-            const [section, setSection] = useState('home');
+            // Inicializar la sección basada en el Hash de la URL al cargar la página
+            const getInitialSection = () => {
+                const hash = window.location.hash.replace('#', '');
+                const validSections = ['home', 'trabajos', 'graduaciones', 'graduacion-unap-2026', 'contact'];
+                return validSections.includes(hash) ? hash : 'home';
+            };
+
+            const [section, setSection] = useState(getInitialSection());
+
+            // Escuchar cambios en el navegador (Botón atrás/adelante)
+            useEffect(() => {
+                const handleHashChange = () => {
+                    const hash = window.location.hash.replace('#', '');
+                    if (hash && hash !== section) {
+                        setSection(hash);
+                    } else if (!hash) {
+                        setSection('home');
+                    }
+                };
+                window.addEventListener('hashchange', handleHashChange);
+                return () => window.removeEventListener('hashchange', handleHashChange);
+            }, [section]);
+
+            // Sincronizar el estado de React con la URL para poder compartir el link
+            useEffect(() => {
+                if (section === 'home') {
+                    // Limpiar el hash para la página principal
+                    if (window.location.hash) {
+                        history.replaceState(null, null, ' ');
+                    }
+                } else {
+                    window.location.hash = section;
+                }
+                // Scroll al tope al cambiar de vista
+                window.scrollTo(0, 0);
+            }, [section]);
 
             const renderContent = () => {
                 switch (section) {
